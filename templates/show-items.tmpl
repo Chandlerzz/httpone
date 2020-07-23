@@ -1,0 +1,81 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width">
+	<meta name="theme-color" content="#ff9900">
+	<script type="text/javascript" src="../static/js/jquery.min.js"></script>
+	<link rel="stylesheet" href="../static/css/show-items.css">
+
+</head>
+<body>
+	<h1>Top grossing films of 2014</h1>
+	<nav class="Scroll_Wrapper">
+
+		{{range .items}}
+		<figure class="Item">
+			<a href="product/{{.Name}}"><img src="{{.Picture}}" alt="Guardians of the Galaxy"/></a>
+			<figcaption class="Caption"><a href="revise/{{.Name}}">
+				<button type="button" name="button">revise</button> </a>{{.Name}}
+				<button type="button" name="{{.Name}}" onclick="Focus(this)">rename</button>
+
+			<form class="forms" action="/rename" onsubmit="return SubmitNewName(this)" style="visibility:hidden">
+				<input type="text" name="name" value="{{.Name}}" readonly>
+				<input type="text" name="rename" value="" >
+				<a href="/index"><input type="submit" name="" value="提交"></a>
+			</form>
+			</figcaption>
+		</figure>
+		{{end}}
+	</nav>
+	<script type="text/javascript">
+var renames = document.getElementsByName("rename")
+for (var i = 0; i < renames.length; i++) {
+	renames[i].parentNode.id=i
+}
+for (var i = 0; i < renames.length; i++) {
+	renames[i].onfocus=function(){
+	for (var j = 0; j < renames.length; j++) {
+		console.log(j);
+		if (Number(this.parentNode.id)!=j){
+					console.log(111)
+			console.log(renames[j].parentNode.style.visibility="hidden");
+		}
+	}
+}
+}
+
+
+	function Focus(element){
+		var form = element.parentNode.children[2]
+		form.style.visibility="visible"
+		var input0=element.parentNode.children[2].children[1]
+		input0.focus()
+	}
+
+	function SubmitNewName(e){
+		var names = document.getElementsByClassName("Caption")
+		for (var i = 0; i < names.length; i++) {
+
+			if(names[i].children[1].name == e.children[1].value){
+				alert("pls change the name Thanks")
+				return false
+			}
+
+
+		}
+// 		$.ajax({
+//   type: "POST",
+//   url: "/rename",
+//   data: {"name":e.children(0).value,
+// 					"rename":e.children(1).value},
+//   success: function(){alert("success")},
+//   dataType: "json"
+// });
+//
+	}
+	</script>
+</body>
+</html>

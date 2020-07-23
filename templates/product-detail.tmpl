@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Our first responsive web page with HTML5 and CSS3</title>
+        <meta name="description" content="A basic responsive web page – an example from Chapter 1" />
+        <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+        <link rel="stylesheet" href="../static/css/product-detail.css" />
+    </head>
+    <body>
+        <div class="Header">
+            <a href="/" class="LogoWrapper"><img src="img/SOC-Logo.png" alt="Scone O'Clock logo"/></a>
+            <p class="Strap">Scones: the most resplendent of snacks</p>
+        </div>
+        <div class="IntroWrapper">
+            <p class="IntroText">Occasionally maligned and misunderstood; the scone is a quintessentially British classic.</p>
+            <div class="MoneyShot">
+                <img class="MoneyShotImg" src="{{.Picture}}" alt="Incredible scones" />
+                <p class="ImageCaption">Incredible scones, picture from Wikipedia</p>
+            </div>
+        </div>
+        <p>Recipe and serving suggestions follow.</p>
+        <div class="Parameters">
+            <h3 class="SubHeader">Parameters</h3>
+            <ul>
+              {{range .Parameters}}
+              <li>{{.}}</li>
+              {{end}}
+            </ul>
+        </div>
+        <div class="HowToMake">
+            <h3 class="SubHeader">characters</h3>
+            <ol class="MethodWrapper">
+              {{range .Characters}}
+              <li>{{.}}</li>
+              {{end}}
+            </ol>
+        </div>
+        <div class="HowToMake">
+            <h3 class="SubHeader">manual</h3>
+            <ol class="MethodWrapper">
+              {{range .Manual}}
+              <li>{{.}}</li>
+              {{end}}
+            </ol>
+        </div>
+        <div class="HowToMake">
+            <h3 class="SubHeader">Warnings</h3>
+            <ol class="MethodWrapper">
+              {{range .Warnings}}
+              <li>{{.}}</li>
+              {{end}}
+            </ol>
+        </div>
+    </body>
+</html>

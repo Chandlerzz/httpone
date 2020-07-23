@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Getting started with JSON Form</title>
+  <link rel="stylesheet" type="text/css" href="../static/css/bootstrap.css" />
+  <style>
+    @import url("../static/css/bootstrap.css");
+    @import url("../static/css/bootstrap-wysihtml5.css");
+    @import url("../static/css/spectrum.css");
+
+    h2 { font-weight: 200; margin-top: 0; }
+
+    .tagline {
+      padding: 10px;
+      font-weight: 200;
+      margin-top: -1em;
+    }
+
+    .footer {
+      margin-top: 40px;
+      padding: 10px 0.5em;
+      border-top: 1px solid #E5E5E5;
+    }
+
+    #form .add-on {
+      border: none;
+      background-color: inherit;
+    }
+
+    .expandable > legend:before {
+      content: '\25B8';
+      padding-right: 5px;
+    }
+    .expanded > legend:before {
+      content: '\25BE';
+    }
+
+    ._jsonform-array-buttons {
+      margin-left: 25px;
+    }
+
+    .jsonform-required > label:after {
+      content: ' *';
+      color: red;
+    }
+
+    form.jsonform-hasrequired:after {
+      content: '* Required field';
+      display: block;
+      color: red;
+      padding-top: 1em;
+    }
+  </style>
+  <script src="https://kit.fontawesome.com/3a555cc6d7.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+</head>
+<body>
+  <h1>Getting started with JSON Form</h1>
+  <form ></form>
+  <div id="res" class="alert"></div>
+
+<script type="text/javascript" src="../static/js/jquery.min.js"></script>
+  <script type="text/javascript" src="../static/js/underscore.js"></script>
+  <script type="text/javascript" src="../static/js/jsv.js"></script>
+  <script type="text/javascript" src="../static/js/jsonform.js"></script>
+  <script type="text/javascript">
+  var indexJson
+  $.getJSON("indexjson",function(json){indexJson=json})
+  function removeItem(e){
+    e.parentNode.parentNode.removeChild(e.parentNode)
+    // e.parentNode.removeChild(e)
+  }
+  $('form').jsonForm({
+    "schema": {
+      "name":{
+        "title":"product name",
+        "type":"string",
+      },
+      "picture":{
+        "title":"picture",
+        "type":"string",
+      },
+      "parameters":{
+        "type": "array",
+        "items": {
+          "title": "parameters",
+          "type": "string"
+        }
+      },
+    "characters": {
+      "type": "array",
+      "items": {
+        "title": "characters",
+        "type": "string"
+      }
+    },
+    "manual": {
+      "type": "array",
+      "items": {
+        "title": "manual",
+        "type": "string"
+      }
+    },
+    "warnings":{
+      "type": "array",
+      "items": {
+        "title": "warnings",
+        "type": "string"
+      }
+    }
+
+  },
+  "form": [
+    {
+      "key":"name",
+    },
+    {
+      "key":"picture",
+    },
+    {
+      "type": "array",
+      "items": [{
+        "key": "parameters[]",
+        "title": "parameters"
+      }]
+    },
+    {
+      "type": "array",
+      "items": [{
+        "key": "characters[]",
+        "title": "characters"
+      }]
+    },
+    {
+      "type": "array",
+      "items": [{
+        "key": "manual[]",
+        "title": "manual"
+      }]
+    },
+    {
+      "type": "array",
+      "items": [{
+        "key": "warnings[]",
+        "title": "warnings"
+      }]
+    },
+    {
+    "type": "submit",
+    "title": "Eat this!"
+  },
+  ],
+  "onSubmit":function (errors, values) {
+            if (errors) {
+              console.log(error);
+            }
+            else {
+              console.log(values);
+              console.log(indexJson);
+              var name=[]
+              for (var i = 0; i < indexJson.items.length; i++) {
+                name.push(indexJson.items[i].name)
+              }
+              console.log(name);
+              if ($.inArray(values.name,name)==0) {
+                return alert("this name is used, please change new name")
+
+              }
+              var json = JSON.stringify(values)
+              console.log("this is json"+json)
+              var request = new XMLHttpRequest();
+              // request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+              request.open("POST","/login")
+              request.setRequestHeader("Content-type","application/json")
+              request.send(json)
+            }
+
+          }
+
+},
+
+);
+
+var uls = $("ul")
+for (var i = 0; i < uls.length; i++) {
+  uls[i].id="sortable-items"+i
+}
+var el0 = document.getElementById('sortable-items0');
+var sortable0 = Sortable.create(el0);
+var el1 = document.getElementById('sortable-items1');
+var sortable1 = Sortable.create(el1);
+var el2 = document.getElementById('sortable-items2');
+var sortable2 = Sortable.create(el2);
+var el3 = document.getElementById('sortable-items3');
+var sortable3 = Sortable.create(el3);
+
+  </script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,245 @@
+revise<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Getting started with JSON Form</title>
+  <link rel="stylesheet" type="text/css" href="../static/css/bootstrap.css" />
+  <style>
+    @import url("../static/css/bootstrap.css");
+    @import url("../static/css/bootstrap-wysihtml5.css");
+    @import url("../static/css/spectrum.css");
+
+    h2 { font-weight: 200; margin-top: 0; }
+
+    .tagline {
+      padding: 10px;
+      font-weight: 200;
+      margin-top: -1em;
+    }
+
+    .footer {
+      margin-top: 40px;
+      padding: 10px 0.5em;
+      border-top: 1px solid #E5E5E5;
+    }
+
+    #form .add-on {
+      border: none;
+      background-color: inherit;
+    }
+
+    .expandable > legend:before {
+      content: '\25B8';
+      padding-right: 5px;
+    }
+    .expanded > legend:before {
+      content: '\25BE';
+    }
+
+    ._jsonform-array-buttons {
+      margin-left: 25px;
+    }
+
+    .jsonform-required > label:after {
+      content: ' *';
+      color: red;
+    }
+
+    form.jsonform-hasrequired:after {
+      content: '* Required field';
+      display: block;
+      color: red;
+      padding-top: 1em;
+    }
+  </style>
+  <script src="https://kit.fontawesome.com/3a555cc6d7.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+</head>
+<body>
+  <h1>Getting started with JSON Form</h1>
+  <form ></form>
+  <div id="res" class="alert"></div>
+
+<script type="text/javascript" src="../static/js/jquery.min.js"></script>
+  <script type="text/javascript" src="../static/js/underscore.js"></script>
+  <script type="text/javascript" src="../static/js/jsv.js"></script>
+  <script type="text/javascript" src="../static/js/jsonform.js"></script>
+  <script type="text/javascript">
+  function removeItem(e){
+    e.parentNode.parentNode.removeChild(e.parentNode)
+    // e.parentNode.removeChild(e)
+  }
+  var indexJson
+  $.getJSON("/data/{{.name}}",function(json){indexJson=json
+  console.log(indexJson);
+  $('form').jsonForm({
+    "schema": {
+      "name":{
+        "title":"product name",
+        "default":indexJson.name,
+        "type":"string",
+        "readOnly": true,
+      },
+      "picture":{
+        "title":"picture",
+        "default": indexJson.picture,
+        "type":"string",
+      },
+      "parameters":{
+        "type": "array",
+        "default": ["qqqqqqq","qqqqqqqq"],
+        "items": {
+          "title": "parameters",
+          "type": "string",
+        }
+      },
+    "characters": {
+      "type": "array",
+
+      "items": {
+        "title": "characters",
+
+        "type": "string"
+      }
+    },
+    "manual": {
+      "type": "array",
+      "items": {
+        "title": "manual",
+        "default": indexJson.manual,
+        "type": "string"
+      }
+    },
+    "warnings":{
+      "type": "array",
+      "items": {
+        "title": "warnings",
+        "default": indexJson.warnings,
+        "type": "string"
+      }
+    }
+
+  },
+  "form": [
+    "*",
+    // {
+    //   "key":"name",
+    // },
+    // {
+    //   "key":"picture",
+    // },
+    // {
+    //   "type": "array",
+    //   "items": [{
+    //     "key": "parameters[]",
+    //     "title": "parameters"
+    //   }]
+    // },
+    // {
+    //   "type": "array",
+    //   "items": [{
+    //     "key": "characters[]",
+    //     "title": "characters"
+    //   }]
+    // },
+    // {
+    //   "type": "array",
+    //   "items": [{
+    //     "key": "manual[]",
+    //     "title": "manual"
+    //   }]
+    // },
+    // {
+    //   "type": "array",
+    //   "items": [{
+    //     "key": "warnings[]",
+    //     "title": "warnings"
+    //   }]
+    // },
+    {
+    "type": "submit",
+    "title": "Eat this!"
+  },
+  ],
+  "onSubmit":function (errors, values) {
+            if (errors) {
+              console.log(error);
+            }
+            else {
+              console.log(values);
+              var json = JSON.stringify(values)
+              console.log("this is json"+json)
+              var request = new XMLHttpRequest();
+              // request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+              request.open("POST","/revise")
+              request.setRequestHeader("Content-type","application/json")
+              request.send(json)
+            }
+            alert("已修改完成")
+            window.location.href="/index"
+
+          }
+
+},
+
+);
+var uls = $("ul")
+for (var i = 0; i < uls.length; i++) {
+  uls[i].id="sortable-items"+i
+}
+var el0 = document.getElementById('sortable-items0');
+var sortable0 = Sortable.create(el0);
+var el1 = document.getElementById('sortable-items1');
+var sortable1 = Sortable.create(el1);
+var el2 = document.getElementById('sortable-items2');
+var sortable2 = Sortable.create(el2);
+var el3 = document.getElementById('sortable-items3');
+var sortable3 = Sortable.create(el3);
+console.log(json);
+var parameters = json.parameters
+var characters = json.characters
+var manual =json.manual
+var warnings = json.warnings
+el0.innerHTML = el0.innerHTML.repeat(parameters.length)
+el1.innerHTML = el1.innerHTML.repeat(characters.length)
+el2.innerHTML = el2.innerHTML.repeat(manual.length)
+el3.innerHTML = el3.innerHTML.repeat(warnings.length)
+inputs0 = $("#sortable-items0 input")
+lis0=$("#sortable-items0 li")
+for (var i=0;i<inputs0.length;i++){
+    inputs0[i].value = parameters[i]
+    inputs0[i].name = "parameters["+i+"]"
+    lis0[i].setAttribute("data-idx",i)
+
+}
+lis1=$("#sortable-items1 li")
+inputs1 = $("#sortable-items1 input")
+for (var i=0;i<inputs1.length;i++){
+    inputs1[i].value = characters[i]
+    inputs1[i].name = "characters["+i+"]"
+    lis1[i].setAttribute("data-idx",i)
+}
+lis2=$("#sortable-items2 li")
+inputs2 = $("#sortable-items2 input")
+for (var i=0;i<inputs2.length;i++){
+    inputs2[i].value = manual[i]
+    inputs2[i].name = "manual["+i+"]"
+    lis2[i].setAttribute("data-idx",i)
+}
+lis3=$("#sortable-items3 li")
+inputs3 = $("#sortable-items3 input")
+for (var i=0;i<inputs3.length;i++){
+    inputs3[i].value = warnings[i]
+    inputs3[i].name = "warnings["+i+"]"
+    lis3[i].setAttribute("data-idx",i)
+}
+  })
+
+
+  </script>
+
+
+
+</body>
+</html>
